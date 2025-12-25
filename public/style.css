@@ -81,24 +81,6 @@ video {
     pointer-events: none; /* Let clicks pass through if needed */
 }
 
-/* Toggle class to show/hide overlay */
-.video-overlay.visible {
-    opacity: 1;
-    pointer-events: all;
-}
-
-.video-overlay span {
-    margin-top: 10px;
-    color: #888;
-    font-size: 0.9rem;
-    letter-spacing: 1px;
-}
-
-.video-overlay .icon {
-    font-size: 2rem;
-    opacity: 0.5;
-}
-
 /* --- SPINNER ANIMATION --- */
 .spinner {
     width: 40px;
