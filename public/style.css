@@ -2,6 +2,7 @@
     --bg-dark: #0f0f13;
     --card-bg: #1e1e1e;
     --primary: #6c5ce7;
+    --logo: #6c5ce7;
     --danger: #ff4757;
     --secondary: #57606f;
     --text-main: #ffffff;
@@ -35,7 +36,7 @@ header {
     justify-content: space-between;
     align-items: center;
 }
-.logo { font-weight: 700; font-size: 1.5rem; color: var(--primary); letter-spacing: 1px; }
+.logo { font-weight: 700; font-size: 1.5rem; color: var(--logo); letter-spacing: 1px; }
 #status-badge { font-size: 0.8rem; padding: 4px 12px; background: #333; border-radius: 12px; }
 
 /* VIDEO SECTION */
