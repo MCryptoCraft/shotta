@@ -1,5 +1,5 @@
 {
-  "name": "simple-webrtc-omegle",
+  "name": "SHOTTA",
   "version": "1.0.0",
   "description": "Random video chat using WebRTC and Socket.IO",
   "main": "server.js",
