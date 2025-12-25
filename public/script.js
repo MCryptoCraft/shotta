@@ -2,11 +2,15 @@ const socket = io();
 
 const localVideo = document.getElementById('local-video');
 const remoteVideo = document.getElementById('remote-video');
-const startBtn = document.getElementById('start-btn');
-const nextBtn = document.getElementById('next-btn');
 const statusBadge = document.getElementById('status-badge');
 
-// Chat Elements
+// Buttons
+const startBtn = document.getElementById('start-btn');
+const nextBtn = document.getElementById('next-btn');
+const stopBtn = document.getElementById('stop-btn');
+const activeControls = document.getElementById('active-controls');
+
+// Chat
 const chatForm = document.getElementById('chat-form');
 const chatInput = document.getElementById('chat-input');
 const chatBox = document.getElementById('chat-box');
@@ -20,45 +24,79 @@ const rtcConfig = {
     ]
 };
 
-// 1. Initialize Media
-async function initMedia() {
+// 1. Media Handling
+async function startMedia() {
     try {
+        if (localStream) return; // Already running
         localStream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
         localVideo.srcObject = localStream;
     } catch (err) {
-        console.error('Media error:', err);
-        addSystemMessage("Error: Could not access camera/mic.");
+        console.error("Media Error:", err);
+        addSystemMessage("Error: Could not access camera.");
     }
 }
-initMedia();
 
-// 2. Button Handlers
-startBtn.addEventListener('click', () => {
+function stopMedia() {
+    if (localStream) {
+        localStream.getTracks().forEach(track => track.stop());
+        localStream = null;
+    }
+    localVideo.srcObject = null;
+    remoteVideo.srcObject = null;
+}
+
+// 2. Start / Stop / Next Logic
+startBtn.addEventListener('click', async () => {
+    await startMedia();
     socket.emit('find-match');
     updateUI('searching');
 });
 
 nextBtn.addEventListener('click', () => {
-    if (peerConnection) {
-        peerConnection.close();
-        peerConnection = null;
-    }
-    remoteVideo.srcObject = null;
-    clearChat(); // Clear chat when switching
+    resetConnection();
+    clearChat();
     socket.emit('find-match');
     updateUI('searching');
 });
 
-// 3. Chat Logic
+stopBtn.addEventListener('click', () => {
+    stopCall();
+});
+
+// 3. New Feature: Auto-Stop on Minimize
+document.addEventListener("visibilitychange", () => {
+    if (document.visibilityState === 'hidden') {
+        // If user leaves the tab/minimizes browser
+        if (localStream) {
+            stopCall();
+            addSystemMessage("Call ended (App minimized)");
+        }
+    }
+});
+
+function stopCall() {
+    resetConnection(); // Close WebRTC
+    stopMedia();       // Turn off camera light
+    socket.emit('disconnect-manual'); // Optional signal to server
+    updateUI('idle');
+    statusBadge.innerText = "Idle";
+    statusBadge.style.background = "#333";
+}
+
+function resetConnection() {
+    if (peerConnection) {
+        peerConnection.close();
+        peerConnection = null;
+    }
+}
+
+// 4. Chat Logic
 chatForm.addEventListener('submit', (e) => {
     e.preventDefault();
     const msg = chatInput.value.trim();
     if (msg) {
-        // Show my message
         addMessage(msg, 'local');
-        // Send to partner
         socket.emit('send-message', msg);
-        // Clear input
         chatInput.value = '';
     }
 });
@@ -72,7 +110,7 @@ function addMessage(text, type) {
     div.classList.add('msg', type);
     div.innerText = text;
     chatBox.appendChild(div);
-    chatBox.scrollTop = chatBox.scrollHeight; // Auto scroll to bottom
+    chatBox.scrollTop = chatBox.scrollHeight;
 }
 
 function addSystemMessage(text) {
@@ -87,15 +125,16 @@ function clearChat() {
     chatBox.innerHTML = '<div class="system-msg">New stranger found. Say hi!</div>';
 }
 
-// 4. Socket Events
+// 5. Socket Events
 socket.on('waiting', (msg) => {
     statusBadge.innerText = "Searching...";
+    statusBadge.style.background = "#e1b12c";
     addSystemMessage(msg);
 });
 
 socket.on('match-found', async ({ role }) => {
     statusBadge.innerText = "Connected";
-    statusBadge.style.background = "#2ed573"; // Green
+    statusBadge.style.background = "#2ed573";
     updateUI('connected');
     addSystemMessage("Stranger connected!");
 
@@ -128,15 +167,11 @@ socket.on('ice-candidate', async (candidate) => {
 });
 
 socket.on('peer-disconnected', () => {
-    if (peerConnection) {
-        peerConnection.close();
-        peerConnection = null;
-    }
+    resetConnection();
     remoteVideo.srcObject = null;
-    updateUI('disconnected');
-    addSystemMessage("Stranger disconnected.");
     statusBadge.innerText = "Disconnected";
     statusBadge.style.background = "#ff4757";
+    addSystemMessage("Stranger left. Click Next.");
 });
 
 function createPeerConnection() {
@@ -150,18 +185,20 @@ function createPeerConnection() {
     };
 }
 
+// 6. UI Manager
 function updateUI(state) {
-    if (state === 'searching') {
+    if (state === 'idle') {
+        startBtn.classList.remove('hidden');
+        activeControls.classList.add('hidden');
+        chatForm.classList.add('hidden');
+    } else if (state === 'searching') {
         startBtn.classList.add('hidden');
-        nextBtn.classList.add('hidden');
+        activeControls.classList.add('hidden');
         chatForm.classList.add('hidden');
     } else if (state === 'connected') {
         startBtn.classList.add('hidden');
-        nextBtn.classList.remove('hidden');
-        chatForm.classList.remove('hidden'); // Show chat input
+        activeControls.classList.remove('hidden'); // Show Stop/Next
+        chatForm.classList.remove('hidden');
         chatInput.focus();
-    } else if (state === 'disconnected') {
-        nextBtn.classList.remove('hidden');
-        chatForm.classList.add('hidden');
     }
 }
