@@ -1,6 +1,6 @@
 :root {
     --bg-dark: #0f0f13;
-    --card-bg: #1e1e24;
+    --card-bg: #1e1e1e;
     --primary: #6c5ce7;
     --danger: #ff4757;
     --secondary: #57606f;
@@ -49,7 +49,7 @@ header {
     position: relative;
     width: 100%;
     aspect-ratio: 1 / 1;
-    background: #000;
+    background: #3c3c3c;
     border-radius: 20px;
     overflow: hidden;
     box-shadow: 0 8px 20px rgba(0,0,0,0.5);
