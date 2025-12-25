@@ -18,10 +18,19 @@
         <div class="video-section">
             <div class="video-card remote-card">
                 <video id="remote-video" autoplay playsinline></video>
+                <div id="remote-overlay" class="video-overlay visible">
+                    <div class="spinner"></div>
+                    <span id="remote-status-text">Waiting...</span>
+                </div>
                 <div class="label-badge">Stranger</div>
             </div>
+
             <div class="video-card local-card">
                 <video id="local-video" autoplay playsinline muted></video>
+                <div id="local-overlay" class="video-overlay visible">
+                    <div class="icon">📷</div>
+                    <span>Camera Off</span>
+                </div>
                 <div class="label-badge">You</div>
             </div>
         </div>
