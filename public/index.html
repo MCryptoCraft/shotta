@@ -12,10 +12,10 @@
     <div class="app-container">
         <header>
             <div class="logo">SHOTTA</div>
-            <div id="status-badge" class="status-waiting">Idle</div>
+            <div id="status-badge" class="status-idle">Idle</div>
         </header>
 
-        <div class="main-grid">
+        <div class="main-content">
             
             <div class="video-section">
                 <div class="video-card remote-card">
@@ -30,20 +30,22 @@
             </div>
 
             <div class="chat-section">
-                <div class="chat-box" id="chat-box">
-                    <div class="system-msg">Click 'Find Stranger' to start chatting.</div>
+                <div class="chat-display" id="chat-box">
+                    <div class="system-msg">Click 'Find Stranger' to start.</div>
                 </div>
                 <form id="chat-form" class="hidden">
-                    <input type="text" id="chat-input" placeholder="Type a message..." autocomplete="off">
+                    <input type="text" id="chat-input" placeholder="Type..." autocomplete="off">
                     <button type="submit" id="send-btn">➤</button>
                 </form>
             </div>
-
         </div>
 
         <div class="controls-area">
             <button id="start-btn" class="btn-primary">Find Stranger</button>
-            <button id="next-btn" class="btn-danger hidden">Next Person ➔</button>
+            <div id="active-controls" class="hidden button-group">
+                <button id="stop-btn" class="btn-secondary">Stop</button>
+                <button id="next-btn" class="btn-danger">Next ➔</button>
+            </div>
         </div>
     </div>
 
