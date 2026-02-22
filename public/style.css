@@ -42,7 +42,7 @@ header {
 /* VIDEO SECTION */
 .video-section {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     gap: 15px;
 }
 
