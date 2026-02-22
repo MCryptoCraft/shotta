@@ -1,5 +1,5 @@
 :root {
-    --bg-dark: #0f0f13;
+    --bg-dark: #030307;
     --card-bg: #1e1e1e;
     --primary: #6c5ce7;
     --logo: #6c5ce7;
@@ -8,6 +8,16 @@
     --text-main: #ffffff;
     --font-family: 'Outfit', sans-serif;
     --bottom-bar-height: 80px;
+}
+
+:root.light-theme {
+    --bg-dark: #f5f5f5;
+    --card-bg: #ffffff;
+    --primary: #5f3dc4;
+    --logo: #5f3dc4;
+    --danger: #ff4757;
+    --secondary: #868e96;
+    --text-main: #1a1a1a;
 }
 
 * { box-sizing: border-box; }
@@ -19,6 +29,7 @@ body {
     color: var(--text-main);
     overflow-y: auto; 
     padding-bottom: calc(var(--bottom-bar-height) + 20px);
+    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .app-container {
@@ -27,7 +38,7 @@ body {
     padding: 15px;
     max-width: 800px;
     margin: 0 auto;
-    gap: 15px;
+    gap: 5px;
 }
 
 /* HEADER */
@@ -38,6 +49,23 @@ header {
 }
 .logo { font-weight: 700; font-size: 1.5rem; color: var(--logo); letter-spacing: 1px; }
 #status-badge { font-size: 0.8rem; padding: 4px 12px; background: #333; border-radius: 5px; }
+
+#theme-btn {
+    background: var(--primary);
+    border: none;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    color: white;
+    font-size: 1.2rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.1s;
+}
+
+#theme-btn:active { transform: scale(0.95); }
 
 /* VIDEO SECTION */
 .video-section {
@@ -50,11 +78,11 @@ header {
     position: relative;
     width: 100%;
     aspect-ratio: 1 / 1;
-    background: #3c3c3c;
-    border-radius: 20px;
+    background: #353535;
+    border-radius: 10px;
     overflow: hidden;
     box-shadow: 0 8px 20px rgba(0,0,0,0.5);
-    border: 1px solid rgba(255,255,255,0.1);
+    border: 5px solid rgba(129, 129, 129, 0.1);
 }
 
 video {
@@ -64,14 +92,13 @@ video {
     transform: scaleX(-1);
 }
 
-/* --- NEW: VIDEO OVERLAY (The Curtain) --- */
 .video-overlay {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background: #111; /* Black background to hide frozen video */
+    background: #111;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -79,10 +106,9 @@ video {
     z-index: 10;
     transition: opacity 0.3s ease;
     opacity: 0;
-    pointer-events: none; /* Let clicks pass through if needed */
+    pointer-events: none;
 }
 
-/* --- SPINNER ANIMATION --- */
 .spinner {
     width: 40px;
     height: 40px;
@@ -99,19 +125,19 @@ video {
 .label-badge {
     position: absolute;
     bottom: 10px;
-    left: 10px;
-    background: rgba(0,0,0,0.6);
-    padding: 4px 10px;
-    border-radius: 8px;
+    right: 10px;
+    background: rgba(0, 0, 0, 0.6);
+    padding: 2px 5px;
+    border-radius: 5px;
     font-size: 0.8rem;
     backdrop-filter: blur(4px);
-    z-index: 20; /* Keep badge above overlay */
+    z-index: 20;
 }
 
 /* CHAT SECTION */
 .chat-section {
     background: var(--card-bg);
-    border-radius: 20px;
+    border-radius: 10px;
     display: flex;
     flex-direction: column;
     height: 250px;
@@ -187,7 +213,7 @@ video {
 button {
     flex: 1;
     padding: 14px 0;
-    border-radius: 50px;
+    border-radius: 10px;
     border: none;
     font-size: 1rem;
     font-weight: 700;
@@ -196,7 +222,7 @@ button {
 }
 button:active { transform: scale(0.95); }
 
-.btn-primary { background: linear-gradient(135deg, var(--primary), #8e44ad); color: white; width: 100%; max-width: 400px; }
+.btn-primary { background: var(--primary); color: rgb(255, 255, 255); width: 100%; max-width: 200px; }
 .btn-danger { background: var(--danger); color: white; }
 .btn-secondary { background: var(--secondary); color: white; }
 
@@ -209,11 +235,10 @@ button:active { transform: scale(0.95); }
         align-items: flex-start;
     }
     .video-section {
-        width: 400px;
+        width: 350px;
     }
     .chat-section {
-        height: 500px;
+        height: 710px;
         flex: 1;
     }
 }
-
