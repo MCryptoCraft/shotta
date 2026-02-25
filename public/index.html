@@ -12,10 +12,7 @@
     <div class="app-container">
         <header>
             <div class="logo">SHOTTA</div>
-            <div class="header-right">
-                <button id="theme-btn" class="theme-btn">🌙</button>
-                <div id="status-badge">Idle</div>
-            </div>
+            <div id="status-badge">Idle</div>
         </header>
 
         <div class="video-section">
@@ -40,7 +37,7 @@
 
         <div class="chat-section">
             <div class="chat-display" id="chat-box">
-                <div class="system-msg">Click 'START' to connect.</div>
+                <div class="system-msg">Click 'Find Stranger' to connect.</div>
             </div>
             <form id="chat-form" class="hidden">
                 <input type="text" id="chat-input" placeholder="Type a message..." autocomplete="off">
@@ -50,15 +47,17 @@
     </div>
 
     <div class="controls-area">
-        <button id="start-btn" class="btn-primary">START</button>
+        <button id="start-btn" class="btn-primary">Find Stranger</button>
         
         <div id="active-controls" class="button-group hidden">
-            <button id="stop-btn" class="btn-secondary">STOP</button>
-            <button id="next-btn" class="btn-danger">NEXT ➔</button>
+            <button id="stop-btn" class="btn-secondary">Stop</button>
+            <button id="next-btn" class="btn-danger">Next ➔</button>
         </div>
     </div>
 
     <script src="/socket.io/socket.io.js"></script>
-    <script src="scrit.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
+ 
+   
